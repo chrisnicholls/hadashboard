@@ -24,11 +24,18 @@ class Dashing.Stmodechange extends Dashing.ClickableWidget
 
   showTimer: ->
     $(@node).find('.icon').hide()
+    $(@node).find('.action').hide()
     $(@node).find('.timer').show()
 
   showIcon: ->
     $(@node).find('.timer').hide()
+    $(@node).find('.action').hide()
     $(@node).find('.icon').show()
+
+  showAction: ->
+    $(@node).find('.icon').hide()
+    $(@node).find('.timer').hide()
+    $(@node).find('.action').show()
 
   isModeSet: ->
     @get('mode') == @get('changemode')
@@ -65,15 +72,15 @@ class Dashing.Stmodechange extends Dashing.ClickableWidget
   onData: (data) ->
 
   changeModeDelayed: =>
+    @showAction()
     if @get('timer') <= 0
-      @showIcon()
       if @get('phrase')
         @postPhraseState()
       else
         @postModeState()
       @_timeout = null
+      @showIcon()
     else
-      @showTimer()
       @set 'timer', @get('timer') - 1
       @_timeout = setTimeout(@changeModeDelayed, 1000)
 
